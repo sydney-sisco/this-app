@@ -1,9 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import futureLogo from '/future.svg'
 import './App.css'
 
-// const { io } = require("socket.io-client");
-// const socket = io();
 import io from 'socket.io-client';
 const socket = io();
 
@@ -11,6 +9,11 @@ function App() {
   const [count, setCount] = useState(0)
 
   const [apiResponse, setApiResponse] = useState('')
+  const [socketResponse, setSocketResponse] = useState('')
+
+  useEffect(() => {
+    testApi()
+  }, [])
 
   const testApi = async () => {
     const response = await fetch('/api/test')
@@ -18,6 +21,19 @@ function App() {
     console.log(data)
     setApiResponse(JSON.stringify(data, null, 2))
   }
+
+  const testSocket = () => {
+    socket.emit("ping");
+  }
+
+  socket.on("pong", (data) => {
+    console.log(data);
+    setSocketResponse(data)
+  });
+
+  useEffect(() => {
+    testSocket()
+  }, [])
 
   socket.on("connect", () => {
     console.log(socket.id);
@@ -44,6 +60,8 @@ function App() {
       </p>
       <button onClick={testApi}>test connection to backend</button>
       <p>{apiResponse}</p>
+      <button onClick={testSocket}>test socket connection</button>
+      <p>{socketResponse}</p>
     </>
   )
 }
