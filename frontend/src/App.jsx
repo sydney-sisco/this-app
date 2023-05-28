@@ -2,6 +2,11 @@ import { useState } from 'react'
 import futureLogo from '/future.svg'
 import './App.css'
 
+// const { io } = require("socket.io-client");
+// const socket = io();
+import io from 'socket.io-client';
+const socket = io();
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -13,6 +18,10 @@ function App() {
     console.log(data)
     setApiResponse(JSON.stringify(data, null, 2))
   }
+
+  socket.on("connect", () => {
+    console.log(socket.id);
+  });
 
   return (
     <>
