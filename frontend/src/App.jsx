@@ -1,32 +1,15 @@
 import { useState, useEffect } from 'react'
+import { ApiTest } from './components/ApiTest'
+import { socket } from './utils/socket'
+import { SocketTest } from './components/SocketTest'
+import { ConnectionState } from './components/ConnectionState'
 import futureLogo from '/future.svg'
 import './App.css'
-
-import { socket } from './utils/socket'
-import { ConnectionState } from './components/ConnectionState'
 
 function App() {
   const [count, setCount] = useState(0)
 
-  const [apiResponse, setApiResponse] = useState('')
-  const [socketResponse, setSocketResponse] = useState('')
-
   const [isConnected, setIsConnected] = useState(socket.connected);
-
-  useEffect(() => {
-    testApi()
-  }, [])
-
-  const testApi = async () => {
-    const response = await fetch('/api/test')
-    const data = await response.json()
-    console.log(data)
-    setApiResponse(JSON.stringify(data, null, 2))
-  }
-
-  const testSocket = () => {
-    socket.emit("ping");
-  }
 
   useEffect(() => {
     function onConnect() {
@@ -37,21 +20,12 @@ function App() {
       setIsConnected(false);
     }
 
-    function onPingEvent(value) {
-      console.log(value);
-      setSocketResponse(value);
-    }
-
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
-    socket.on('pong', onPingEvent);
-
-    testSocket();
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
-      socket.off('pong', onPingEvent);
     };
   }, []);
 
@@ -74,10 +48,8 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <button onClick={testApi}>test connection to backend</button>
-      <p>{apiResponse}</p>
-      <button onClick={testSocket}>test socket connection</button>
-      <p>{socketResponse}</p>
+      <ApiTest />
+      <SocketTest />
       <ConnectionState isConnected={ isConnected } />
     </>
   )
