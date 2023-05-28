@@ -1,18 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { ApiTest } from './components/ApiTest'
+import { socket } from './utils/socket'
+import { SocketTest } from './components/SocketTest'
+import { ConnectionState } from './components/ConnectionState'
 import futureLogo from '/future.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
-  const [apiResponse, setApiResponse] = useState('')
+  const [isConnected, setIsConnected] = useState(socket.connected);
 
-  const testApi = async () => {
-    const response = await fetch('/api/test')
-    const data = await response.json()
-    console.log(data)
-    setApiResponse(JSON.stringify(data, null, 2))
-  }
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
+  }, []);
 
   return (
     <>
@@ -22,6 +37,9 @@ function App() {
         </a>
       </div>
       <h1>webapp-template</h1>
+      <p className="read-the-docs">
+        Click on the logo to learn more
+      </p>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -30,11 +48,9 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the logo to learn more
-      </p>
-      <button onClick={testApi}>test connection to backend</button>
-      <p>{apiResponse}</p>
+      <ApiTest />
+      <SocketTest />
+      <ConnectionState isConnected={ isConnected } />
     </>
   )
 }

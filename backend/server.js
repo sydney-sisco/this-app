@@ -19,6 +19,9 @@ app.get('/api/test', (req, res) => {
   res.send(sampleData);
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+const io = require('./utils/socket')(server);
+require('./features/socketPing')(io);
