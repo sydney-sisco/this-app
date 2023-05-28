@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react'
 import futureLogo from '/future.svg'
 import './App.css'
 
-import io from 'socket.io-client';
-const socket = io();
+import { socket } from './utils/socket'
+import { ConnectionState } from './components/ConnectionState'
 
 function App() {
   const [count, setCount] = useState(0)
 
   const [apiResponse, setApiResponse] = useState('')
   const [socketResponse, setSocketResponse] = useState('')
+
+  const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
     testApi()
@@ -26,18 +28,32 @@ function App() {
     socket.emit("ping");
   }
 
-  socket.on("pong", (data) => {
-    console.log(data);
-    setSocketResponse(data)
-  });
-
   useEffect(() => {
-    testSocket()
-  }, [])
+    function onConnect() {
+      setIsConnected(true);
+    }
 
-  socket.on("connect", () => {
-    console.log(socket.id);
-  });
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    function onPingEvent(value) {
+      console.log(value);
+      setSocketResponse(value);
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('pong', onPingEvent);
+
+    testSocket();
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('pong', onPingEvent);
+    };
+  }, []);
 
   return (
     <>
@@ -47,6 +63,9 @@ function App() {
         </a>
       </div>
       <h1>webapp-template</h1>
+      <p className="read-the-docs">
+        Click on the logo to learn more
+      </p>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -55,13 +74,11 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the logo to learn more
-      </p>
       <button onClick={testApi}>test connection to backend</button>
       <p>{apiResponse}</p>
       <button onClick={testSocket}>test socket connection</button>
       <p>{socketResponse}</p>
+      <ConnectionState isConnected={ isConnected } />
     </>
   )
 }
