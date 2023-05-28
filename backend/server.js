@@ -19,6 +19,12 @@ app.get('/api/test', (req, res) => {
   res.send(sampleData);
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+const { Server } = require("socket.io");
+const io = new Server(server);
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
