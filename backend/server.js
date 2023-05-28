@@ -23,16 +23,5 @@ const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-const { Server } = require("socket.io");
-const io = new Server(server);
-io.on('connection', (socket) => {
-  console.log('a user connected');
-
-  socket.on('ping', () => {
-    socket.emit('pong', `✅ ${Math.random()}`);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-});
+const io = require('./utils/socket')(server);
+require('./features/socketPing')(io);
