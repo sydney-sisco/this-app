@@ -21,6 +21,23 @@ Uses Node v18
 
 Node versions [here](https://nodejs.dev/en/about/releases/)
 
+### Deployment
+
+To deploy the app you can follow these steps:
+
+from the frontend directory:
+
+`npm run build`
+
+This will create a production build of the frontend in the `backend/public` directory.
+
+from the backend directory:
+
+`gcloud run deploy`
+
+It's really that easy.
+
+
 ## Frontend
 
 React app set up with Vite. Details of that [here](https://vitejs.dev/guide/).
