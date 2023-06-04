@@ -2,18 +2,13 @@
 
 A starting point.
 
-Includes:
-- Frontend: React, Vite
-- Backend: Express, Socket.io
+React frontend, Express backend.
 
-## To Do
+Out of the box features:
+- Socket.io connection
+- VSCode debugging for backend
+- Easily deployable to Google Cloud Run
 
-Install TailwindCSS. [Instructions](https://tailwindcss.com/docs/guides/vite)
-Add tests to backend:
-https://www.npmjs.com/package/jest
-https://www.npmjs.com/package/supertest
-
-backend debugging with vscode
 
 ## Development
 
