@@ -1,13 +1,6 @@
-# webapp-template
+# this-app
 
-A starting point.
-
-React frontend, Express backend.
-
-Out of the box features:
-- Socket.io connection
-- VSCode debugging for backend
-- Easily deployable to Google Cloud Run
+You'll know it when you see it.
 
 
 ## Development
