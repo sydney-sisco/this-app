@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { ApiTest } from './components/ApiTest'
 import { socket } from './utils/socket'
-import { SocketTest } from './components/SocketTest'
-import { ConnectionState } from './components/ConnectionState'
-import futureLogo from '/future.svg'
 import './App.css'
+import Header from './components/Header';
+import NotebookSidebar from './components/NotebookSidebar';
+import NoteSidebar from './components/NoteSidebar';
+import NoteEditor from './components/NoteEditor';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -30,28 +30,14 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://github.com/sydney-sisco/webapp-template" target="_blank">
-          <img src={futureLogo} className="logo" alt="future logo" />
-        </a>
+    <div className="app">
+      <Header />
+      <div className="main">
+        <NotebookSidebar />
+        <NoteSidebar />
+        <NoteEditor />
       </div>
-      <h1>webapp-template</h1>
-      <p className="read-the-docs">
-        Click on the logo to learn more
-      </p>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <ApiTest />
-      <SocketTest />
-      <ConnectionState isConnected={ isConnected } />
-    </>
+    </div>
   )
 }
 
