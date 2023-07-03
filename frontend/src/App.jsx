@@ -2,13 +2,9 @@ import { useState, useEffect } from 'react'
 import { socket } from './utils/socket'
 import './App.css'
 import Header from './components/Header';
-import NotebookSidebar from './components/NotebookSidebar';
-import NoteSidebar from './components/NoteSidebar';
-import NoteEditor from './components/NoteEditor';
+import BasicTabs from './components/BasicTabs';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
@@ -31,11 +27,16 @@ function App() {
 
   return (
     <div className="app">
-      <Header />
-      <div className="main">
-        <NotebookSidebar />
-        <NoteSidebar />
-        <NoteEditor />
+      <div className="container">
+        <div className="column filters">
+          <Header />
+        </div>
+        <div className="column column-2">
+          <BasicTabs />
+        </div>
+        <div className="column fall">
+          Fallen Projects
+        </div>
       </div>
     </div>
   )
