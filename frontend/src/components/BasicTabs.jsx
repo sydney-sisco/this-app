@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import TextEditor from './TextEditor';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,6 +68,7 @@ export default function BasicTabs() {
       {tabs.map((tab, index) => (
         <TabPanel value={value} key={index} index={index}>
           {tab.content}
+          <TextEditor />
         </TabPanel>
       ))}
 

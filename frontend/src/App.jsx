@@ -3,6 +3,8 @@ import { socket } from './utils/socket'
 import './App.css'
 import Header from './components/Header';
 import BasicTabs from './components/BasicTabs';
+import Button from '@mui/material/Button';
+
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -30,6 +32,7 @@ function App() {
       <div className="container">
         <div className="column filters">
           <Header />
+          <Button variant="contained">Add project</Button>
         </div>
         <div className="column column-2">
           <BasicTabs />
