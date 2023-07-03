@@ -18,6 +18,7 @@ function TextEditor({ text, onTextSave }) {
         <div>
           <TextField
             multiline
+            fullWidth
             variant="outlined"
             value={text}
             onChange={handleChange}

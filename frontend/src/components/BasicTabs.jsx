@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import TextEditor from './TextEditor';
 
 function TabPanel(props) {
@@ -53,6 +54,10 @@ export default function BasicTabs() {
     setTabs(oldTabs => [...oldTabs, { label, content }]);
   };
 
+  const deleteTab = (index) => {
+    setTabs(oldTabs => oldTabs.filter((_, i) => i !== index));
+  };
+
   const handleTextSave = (newText, tabIndex) => {
     setTabs(tabs =>
       tabs.map((tab, index) =>
@@ -80,7 +85,8 @@ export default function BasicTabs() {
         </TabPanel>
       ))}
 
-      <button onClick={() => addTab(`Item ${tabs.length + 1}`, `Item ${tabs.length + 1}`)}>Add Project</button>
+      <Button variant="contained" onClick={() => addTab(`Item ${tabs.length + 1}`, `Item ${tabs.length + 1}`)}>Add Project</Button>
+      <Button variant="contained" onClick={() => deleteTab(value)} >Delete Project</Button>
     </Box>
   );
 }
