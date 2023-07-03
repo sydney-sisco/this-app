@@ -5,12 +5,16 @@ import Typography from '@mui/material/Typography';
 
 function TextEditor({ text, onTextSave }) {
   const [isEditMode, setEditMode] = useState(false);
+  const [editedText, setEditedText] = useState(text);  // new state variable to hold the edited text
 
   const handleEditClick = () => setEditMode(true);
 
-  const handleSaveClick = () => setEditMode(false);
+  const handleSaveClick = () => {
+    setEditMode(false);
+    onTextSave(editedText);  // invoke onTextSave with editedText when the save button is clicked.
+  };
 
-  const handleChange = (event) => onTextSave(event.target.value);
+  const handleChange = (event) => setEditedText(event.target.value);
 
   return (
     <div>
@@ -20,7 +24,7 @@ function TextEditor({ text, onTextSave }) {
             multiline
             fullWidth
             variant="outlined"
-            value={text}
+            value={editedText}
             onChange={handleChange}
           />
           <Button onClick={handleSaveClick} color="primary">

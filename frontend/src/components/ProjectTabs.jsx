@@ -40,10 +40,8 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs() {
-  const [tabs, setTabs] = useState([
-    { label: "Item One", text: "placeholder from initial state" },
-  ]);
+export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelete }) {
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -51,11 +49,15 @@ export default function BasicTabs() {
   };
 
   const addTab = (label, content) => {
-    setTabs(oldTabs => [...oldTabs, { label, content }]);
+    handleAdd({ label, text: content });
+  };
+
+  const handleDataChange = (index, newText) => {
+    handleUpdate(data[index].id);
   };
 
   const deleteTab = (index) => {
-    setTabs(oldTabs => oldTabs.filter((_, i) => i !== index));
+    handleDelete(data[index].id);
   };
 
   const handleTextSave = (newText, tabIndex) => {
@@ -70,22 +72,22 @@ export default function BasicTabs() {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="dynamic tabs">
-          {tabs.map((tab, index) => (
+          {data.map((tab, index) => (
             <Tab key={index} label={tab.label} {...a11yProps(index)} />
           ))}
         </Tabs>
       </Box>
 
-      {tabs.map((tab, index) => (
+      {data.map((tab, index) => (
         <TabPanel value={value} key={index} index={index}>
           <TextEditor
             text={tab.text}
-            onTextSave={newText => handleTextSave(newText, index)}
+            onTextSave={newText => handleDataChange(index, newText)}
           />
         </TabPanel>
       ))}
 
-      <Button variant="contained" onClick={() => addTab(`Item ${tabs.length + 1}`, `Item ${tabs.length + 1}`)}>Add Project</Button>
+      <Button variant="contained" onClick={() => addTab(`Item ${data.length + 1}`, `Item ${data.length + 1}`)}>Add Project</Button>
       <Button variant="contained" onClick={() => deleteTab(value)} >Delete Project</Button>
     </Box>
   );
