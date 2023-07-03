@@ -3,15 +3,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-function TextEditor() {
+function TextEditor({ text, onTextSave }) {
   const [isEditMode, setEditMode] = useState(false);
-  const [text, setText] = useState('');
 
   const handleEditClick = () => setEditMode(true);
 
   const handleSaveClick = () => setEditMode(false);
 
-  const handleChange = (event) => setText(event.target.value);
+  const handleChange = (event) => onTextSave(event.target.value);
 
   return (
     <div>

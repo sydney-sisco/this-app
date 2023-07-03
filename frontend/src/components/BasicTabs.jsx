@@ -41,9 +41,7 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [tabs, setTabs] = useState([
-    { label: "Item One", content: "Item One" },
-    { label: "Item Two", content: "Item Two" },
-    { label: "Item Three", content: "Item Three" }
+    { label: "Item One", text: "placeholder from initial state" },
   ]);
   const [value, setValue] = useState(0);
 
@@ -53,6 +51,14 @@ export default function BasicTabs() {
 
   const addTab = (label, content) => {
     setTabs(oldTabs => [...oldTabs, { label, content }]);
+  };
+
+  const handleTextSave = (newText, tabIndex) => {
+    setTabs(tabs =>
+      tabs.map((tab, index) =>
+        index === tabIndex ? { ...tab, text: newText } : tab
+      )
+    );
   };
 
   return (
@@ -67,8 +73,10 @@ export default function BasicTabs() {
 
       {tabs.map((tab, index) => (
         <TabPanel value={value} key={index} index={index}>
-          {tab.content}
-          <TextEditor />
+          <TextEditor
+            text={tab.text}
+            onTextSave={newText => handleTextSave(newText, index)}
+          />
         </TabPanel>
       ))}
 
