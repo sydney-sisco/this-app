@@ -6,6 +6,8 @@ import ProjectTabs from './components/ProjectTabs';
 import Button from '@mui/material/Button';
 import { usePersistence } from './hooks/usePersistence';
 import useIndexedDB from './hooks/useIndexedDB';
+import { TextField } from '@mui/material';
+import Typography from '@mui/material/Typography';
 
 
 function App() {
@@ -65,7 +67,7 @@ function App() {
       <div className="container">
         <div className="column filters">
           <Header />
-          <Button variant="contained">Add project</Button>
+          <Button variant="contained" onClick={handleAdd}>Add project</Button>
         </div>
         <div className="column column-2">
           {/* <ProjectTabs
@@ -79,20 +81,35 @@ function App() {
               ? (
                 <div>
                   {/* Edit Form Goes Here */}
-                  <input type="text" value={tempItem.title} onChange={e => setTempItem({ ...tempItem, title: e.target.value })} />
-                  <button onClick={handleSave}>Save</button>
+                  <TextField
+                    variant='outlined'
+                    value={tempItem.title}
+                    onChange={e => setTempItem({ ...tempItem, title: e.target.value })}
+                  />
+                  <TextField
+                    multiline
+                    fullWidth
+                    variant="outlined"
+                    value={tempItem.text}
+                    onChange={e => setTempItem({ ...tempItem, text: e.target.value })}
+                  />
+                  {/* <button onClick={handleSave}>Save</button> */}
+                  <Button variant="contained" onClick={handleSave}>Save</Button>
+                  <Button variant="contained" onClick={() => setIsEditing(false)}>Cancel</Button>
                 </div>
               )
               : data.map(item => (
                 <div key={item.id}>
                   {/* Item View Goes Here */}
-                  <p>{item.title}</p>
-                  <button onClick={() => handleEdit(item)}>Edit</button>
-                  <button onClick={() => handleDelete(item.id)}>Delete</button>
+                  <Typography>{item.title}</Typography>
+                  <Typography style={{ whiteSpace: 'pre-line' }}>
+                    {item.text}
+                  </Typography>
+                  <Button variant="contained" onClick={() => handleEdit(item)}>Edit</Button>
+                  <Button variant="contained" onClick={() => handleDelete(item.id)}>Delete</Button>
                 </div>
               ))
             }
-            <button onClick={handleAdd}>Add Item</button>
           </div>
         </div>
         <div className="column fall">
