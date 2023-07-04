@@ -6,8 +6,6 @@ import ProjectTabs from './components/ProjectTabs';
 import Button from '@mui/material/Button';
 import { usePersistence } from './hooks/usePersistence';
 import useIndexedDB from './hooks/useIndexedDB';
-import { TextField } from '@mui/material';
-import Typography from '@mui/material/Typography';
 
 
 function App() {
@@ -22,19 +20,12 @@ function App() {
 
   const handleAdd = () => {
     // Prepare an empty object for the new item.
+    if (data.length === 0) {
+      addItem({});
+    }
     setTempItem({});
     setIsEditing(true);
   };
-
-  // const handleSave = () => {
-  //   if (tempItem.id) {
-  //     updateItem(tempItem.id, tempItem);
-  //   } else {
-  //     addItem(tempItem);
-  //   }
-  //   setTempItem({});
-  //   setIsEditing(false);
-  // };
 
   const handleDelete = (id) => {
     deleteItem(id);
@@ -76,38 +67,6 @@ function App() {
             tempItem={tempItem}
             setTempItem={setTempItem}
           />
-          {/* <div>
-            {isEditing
-              ? (
-                <div>
-                  <TextField
-                    variant='outlined'
-                    value={tempItem.title}
-                    onChange={e => setTempItem({ ...tempItem, title: e.target.value })}
-                  />
-                  <TextField
-                    multiline
-                    fullWidth
-                    variant="outlined"
-                    value={tempItem.text}
-                    onChange={e => setTempItem({ ...tempItem, text: e.target.value })}
-                  />
-                  <Button variant="contained" onClick={handleSave}>Save</Button>
-                  <Button variant="contained" onClick={() => setIsEditing(false)}>Cancel</Button>
-                </div>
-              )
-              : data.map(item => (
-                <div key={item.id}>
-                  <Typography>{item.title}</Typography>
-                  <Typography style={{ whiteSpace: 'pre-line' }}>
-                    {item.text}
-                  </Typography>
-                  <Button variant="contained" onClick={() => handleEdit(item)}>Edit</Button>
-                  <Button variant="contained" onClick={() => handleDelete(item.id)}>Delete</Button>
-                </div>
-              ))
-            }
-          </div> */}
         </div>
         <div className="column fall">
           Fallen Projects

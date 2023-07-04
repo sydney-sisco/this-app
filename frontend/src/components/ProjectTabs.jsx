@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
-import TextEditor from './TextEditor';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -37,8 +36,6 @@ TabPanel.propTypes = {
 export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelete, isEditing, setIsEditing, tempItem, setTempItem }) {
 
   const [value, setValue] = useState(0);
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [tempItem, setTempItem] = useState({});
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -61,10 +58,10 @@ export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelet
 
   const onDelete = (id) => {
     // change value to the previous tab if the current tab is deleted
-    if (value === data.length - 1) {
+    if (value > 0) {
       setValue(value - 1);
     } else {
-      setValue(value);
+      setValue(0);
     }
 
     handleDelete(id);
