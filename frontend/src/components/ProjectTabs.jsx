@@ -104,8 +104,8 @@ export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelet
             )
             : (
               <div key={item.id}>
-                <Typography>{item.title}</Typography>
-                <Typography style={{ whiteSpace: 'pre-line' }}>
+                <Typography variant="h3" gutterBottom>{item.title}</Typography>
+                <Typography gutterBottom style={{ whiteSpace: 'pre-line' }}>
                   {item.text}
                 </Typography>
                 <Button variant="contained" onClick={() => handleEdit(item)}>Edit</Button>
