@@ -13,32 +13,28 @@ import Typography from '@mui/material/Typography';
 function App() {
   const { deviceId } = usePersistence();
   const [isConnected, setIsConnected] = useState(socket.connected);
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [tempItem, setTempItem] = useState({});
 
   // Initialize the hook for a specific table
   const { data, addItem, updateItem, deleteItem } = useIndexedDB('projects');
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempItem, setTempItem] = useState({});
 
   const handleAdd = () => {
     // Prepare an empty object for the new item.
     setTempItem({});
     setIsEditing(true);
   };
-  
-  // const handleEdit = (item) => {
-  //   setTempItem(item);
-  //   setIsEditing(true);
-  // };
 
-  const handleSave = () => {
-    if (tempItem.id) {
-      updateItem(tempItem.id, tempItem);
-    } else {
-      addItem(tempItem);
-    }
-    setTempItem({});
-    setIsEditing(false);
-  };
+  // const handleSave = () => {
+  //   if (tempItem.id) {
+  //     updateItem(tempItem.id, tempItem);
+  //   } else {
+  //     addItem(tempItem);
+  //   }
+  //   setTempItem({});
+  //   setIsEditing(false);
+  // };
 
   const handleDelete = (id) => {
     deleteItem(id);
@@ -72,9 +68,13 @@ function App() {
         <div className="column column-2">
           <ProjectTabs
             data={data} 
-            handleAdd={handleAdd}
+            handleAdd={addItem}
             handleUpdate={updateItem}
             handleDelete={handleDelete}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            tempItem={tempItem}
+            setTempItem={setTempItem}
           />
           {/* <div>
             {isEditing

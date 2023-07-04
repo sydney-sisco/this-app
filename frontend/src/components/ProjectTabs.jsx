@@ -34,11 +34,11 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelete }) {
+export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelete, isEditing, setIsEditing, tempItem, setTempItem }) {
 
   const [value, setValue] = useState(0);
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempItem, setTempItem] = useState({});
+  // const [isEditing, setIsEditing] = useState(false);
+  // const [tempItem, setTempItem] = useState({});
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -58,6 +58,18 @@ export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelet
     setTempItem({});
     setIsEditing(false);
   };
+
+  const onDelete = (id) => {
+    // change value to the previous tab if the current tab is deleted
+    if (value === data.length - 1) {
+      setValue(value - 1);
+    } else {
+      setValue(value);
+    }
+
+    handleDelete(id);
+  };
+
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -97,7 +109,7 @@ export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelet
                   {item.text}
                 </Typography>
                 <Button variant="contained" onClick={() => handleEdit(item)}>Edit</Button>
-                <Button variant="contained" onClick={() => handleDelete(item.id)}>Delete</Button>
+                <Button variant="contained" onClick={() => onDelete(item.id)}>Delete</Button>
               </div>
             )
           }
