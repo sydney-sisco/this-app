@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 function App() {
   const { deviceId } = usePersistence();
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempItem, setTempItem] = useState({});
+  // const [isEditing, setIsEditing] = useState(false);
+  // const [tempItem, setTempItem] = useState({});
 
   // Initialize the hook for a specific table
   const { data, addItem, updateItem, deleteItem } = useIndexedDB('projects');
@@ -25,10 +25,10 @@ function App() {
     setIsEditing(true);
   };
   
-  const handleEdit = (item) => {
-    setTempItem(item);
-    setIsEditing(true);
-  };
+  // const handleEdit = (item) => {
+  //   setTempItem(item);
+  //   setIsEditing(true);
+  // };
 
   const handleSave = () => {
     if (tempItem.id) {
@@ -70,17 +70,16 @@ function App() {
           <Button variant="contained" onClick={handleAdd}>Add project</Button>
         </div>
         <div className="column column-2">
-          {/* <ProjectTabs
+          <ProjectTabs
             data={data} 
             handleAdd={handleAdd}
-            handleUpdate={handleUpdate}
+            handleUpdate={updateItem}
             handleDelete={handleDelete}
-          /> */}
-          <div>
+          />
+          {/* <div>
             {isEditing
               ? (
                 <div>
-                  {/* Edit Form Goes Here */}
                   <TextField
                     variant='outlined'
                     value={tempItem.title}
@@ -93,14 +92,12 @@ function App() {
                     value={tempItem.text}
                     onChange={e => setTempItem({ ...tempItem, text: e.target.value })}
                   />
-                  {/* <button onClick={handleSave}>Save</button> */}
                   <Button variant="contained" onClick={handleSave}>Save</Button>
                   <Button variant="contained" onClick={() => setIsEditing(false)}>Cancel</Button>
                 </div>
               )
               : data.map(item => (
                 <div key={item.id}>
-                  {/* Item View Goes Here */}
                   <Typography>{item.title}</Typography>
                   <Typography style={{ whiteSpace: 'pre-line' }}>
                     {item.text}
@@ -110,7 +107,7 @@ function App() {
                 </div>
               ))
             }
-          </div>
+          </div> */}
         </div>
         <div className="column fall">
           Fallen Projects

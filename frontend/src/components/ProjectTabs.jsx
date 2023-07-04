@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { TextField } from '@mui/material';
 import TextEditor from './TextEditor';
 
 function TabPanel(props) {
@@ -20,7 +21,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'div'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -33,39 +34,29 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
 export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelete }) {
 
   const [value, setValue] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempItem, setTempItem] = useState({});
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const addTab = (label, content) => {
-    handleAdd({ label, text: content });
+  const handleEdit = (item) => {
+    setTempItem(item);
+    setIsEditing(true);
   };
 
-  const handleDataChange = (index, newText) => {
-    handleUpdate(data[index].id);
-  };
-
-  const deleteTab = (index) => {
-    handleDelete(data[index].id);
-  };
-
-  const handleTextSave = (newText, tabIndex) => {
-    setTabs(tabs =>
-      tabs.map((tab, index) =>
-        index === tabIndex ? { ...tab, text: newText } : tab
-      )
-    );
+  const handleSave = () => {
+    if (tempItem.id) {
+      handleUpdate(tempItem.id, tempItem);
+    } else {
+      handleAdd(tempItem);
+    }
+    setTempItem({});
+    setIsEditing(false);
   };
 
   return (
@@ -73,22 +64,45 @@ export default function ProjectTabs({ data, handleAdd, handleUpdate, handleDelet
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="dynamic tabs">
           {data.map((tab, index) => (
-            <Tab key={index} label={tab.label} {...a11yProps(index)} />
+            <Tab key={index} label={tab.title} />
           ))}
         </Tabs>
       </Box>
 
-      {data.map((tab, index) => (
+      {data.map((item, index) => (
         <TabPanel value={value} key={index} index={index}>
-          <TextEditor
-            text={tab.text}
-            onTextSave={newText => handleDataChange(index, newText)}
-          />
+          {isEditing
+            ? (
+              <div>
+                <TextField
+                  variant='outlined'
+                  value={tempItem.title}
+                  onChange={e => setTempItem({ ...tempItem, title: e.target.value })}
+                />
+                <TextField
+                  multiline
+                  fullWidth
+                  variant="outlined"
+                  value={tempItem.text}
+                  onChange={e => setTempItem({ ...tempItem, text: e.target.value })}
+                />
+                <Button variant="contained" onClick={handleSave}>Save</Button>
+                <Button variant="contained" onClick={() => setIsEditing(false)}>Cancel</Button>
+              </div>
+            )
+            : (
+              <div key={item.id}>
+                <Typography>{item.title}</Typography>
+                <Typography style={{ whiteSpace: 'pre-line' }}>
+                  {item.text}
+                </Typography>
+                <Button variant="contained" onClick={() => handleEdit(item)}>Edit</Button>
+                <Button variant="contained" onClick={() => handleDelete(item.id)}>Delete</Button>
+              </div>
+            )
+          }
         </TabPanel>
       ))}
-
-      <Button variant="contained" onClick={() => addTab(`Item ${data.length + 1}`, `Item ${data.length + 1}`)}>Add Project</Button>
-      <Button variant="contained" onClick={() => deleteTab(value)} >Delete Project</Button>
     </Box>
   );
 }
